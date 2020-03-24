@@ -1,0 +1,61 @@
+version: "3.4"
+
+services:
+  api:
+    build:
+      context: .
+      target: dev
+    image: ise_2019_service:dev
+    container_name: backend
+    environment:
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      PGPASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME_TEST: ${DB_NAME_TEST}
+      DB_NAME_DEV: ${DB_NAME_DEV}
+      DB_NAME_PROD: ${DB_NAME_PROD}
+      NODE_ENV: ${NODE_ENV}
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+    expose:
+      - "3000"
+    depends_on:
+      - nats
+      - redis
+    restart: always
+    networks:
+      - default
+
+  nats:
+    image: nats
+    container_name: nats
+    restart: always
+    networks:
+      - default
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    networks:
+      - default
+
+  postgres:
+    image: postgres:12-alpine
+    container_name: postgresql
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - default
+
+volumes:
+  dbdata:
+  prometheus_data:

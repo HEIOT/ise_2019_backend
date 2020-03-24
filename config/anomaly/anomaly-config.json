@@ -1,0 +1,24 @@
+{
+  "spikeDetection": {
+    "lag": 5,
+    "threshold": 2.5,
+    "influence": 0.5
+  },
+  "dropoutDetection": {
+    "interval": 86400000
+  },
+  "threshold": {
+    "warning": {
+      "no2": 200,
+      "pm10": 50,
+      "pm25": 20,
+      "o3": 120
+    },
+    "urgent": {
+      "no2": 240,
+      "pm10": 60,
+      "pm25": 25,
+      "o3": 240
+    }
+  }
+}
